@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Adds payment method for robokassa.ru'
   s.required_ruby_version = '>= 1.8.7'
 
-  s.authors           = ['Roman Smirnov', 'parallel588']
+  s.authors           = "Secoint"
   s.homepage          = 'https://github.com/secoint/spree_robokassa'
 
   s.files         = `git ls-files`.split("\n")
