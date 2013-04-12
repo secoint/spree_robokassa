@@ -1,10 +1,11 @@
 module Spree
-  class Gateway::RobokassaController < Spree::BaseController
+  class Gateway::RobokassaController < BaseController
+    include Spree::Core::ControllerHelpers::Order
     skip_before_filter :verify_authenticity_token, :only => [:result, :success, :fail]
     before_filter :load_order,                     :only => [:result, :success, :fail]
     ssl_required :show
     
-    def show
+    def show      
       @order =  Order.find(params[:order_id])
       @gateway = @order.available_payment_methods.detect{|x| x.id == params[:gateway_id].to_i }
 
@@ -61,5 +62,5 @@ module Spree
       params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["OutSum"], params["InvId"], key ].join(':')).upcase
     end
 
-  end
+  end  
 end
