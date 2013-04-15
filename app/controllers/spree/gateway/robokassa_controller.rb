@@ -37,14 +37,12 @@ module Spree
     end
 
     def success
-      if @order && @gateway && valid_signature?(@gateway.options[:password1]) && @order.complete?
+      if @order && @gateway && valid_signature?(@gateway.options[:password1]) 
         session[:order_id] = nil
-
         redirect_to order_path(@order), :notice => I18n.t("payment_success")
       else
         flash[:error] =  t("payment_fail")
-        render :text => params.inspect
-        #redirect_to root_url
+        redirect_to root_url
       end
     end
 
@@ -61,7 +59,7 @@ module Spree
     end
 
     def valid_signature?(key)
-      params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["MrchLogin"],params["OutSum"], params["InvId"], key ].join(':')).upcase
+      params["SignatureValue"].upcase == Digest::MD5.hexdigest([params["OutSum"], params["InvId"], key ].join(':')).upcase
     end
 
   end  
