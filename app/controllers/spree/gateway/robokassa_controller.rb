@@ -37,7 +37,7 @@ module Spree
     end
 
     def success
-      if @order && @gateway && valid_signature?(@gateway.options[:password1]) 
+      if @order && @gateway && valid_signature?(@gateway.options[:password1]) && @order.complete?
         session[:order_id] = nil
         redirect_to order_path(@order), :notice => I18n.t("payment_success")
       else
