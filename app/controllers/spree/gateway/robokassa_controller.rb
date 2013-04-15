@@ -26,8 +26,7 @@ module Spree
         payment.state = "completed"
         payment.amount = params["OutSum"].to_f
         payment.save
-        @order.save!
-        @order.next! until @order.state == "complete"
+        @order.save!        
         @order.update!
         
         render :text => "OK#{@order.id}"
