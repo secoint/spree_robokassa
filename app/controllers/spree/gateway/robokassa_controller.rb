@@ -22,12 +22,14 @@ module Spree
 
     def result
       if @order && @gateway && valid_signature?(@gateway.options[:password2])
-        payment = @order.payments.build(:payment_method => @order.payment_method)
-        payment.state = "completed"
-        payment.amount = params["OutSum"].to_f
+        @order.next!
+        payment = @order.payments.build(:amount =>  params["OutSum"].to_f )
+        payment.payment_method = @order.payment_method                
+        payment.complete!
         payment.save
-        @order.save!        
+        @order.state = "complete"
         @order.update!
+        @order.finalize!        
         
         render :text => "OK#{@order.id}"
       else
